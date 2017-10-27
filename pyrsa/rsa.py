@@ -32,7 +32,7 @@ class RSAKey:
         self._d = self._pick_d()
 
         if verbose:
-            print("p: ", self._q)
+            print("p: ", self._p)
             print("q: ", self._q)
             print("n: ", self._n)
             print("z: ", self._z)
