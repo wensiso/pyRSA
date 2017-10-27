@@ -1,16 +1,14 @@
-'''
+"""
 Created on 8 de mar de 2017
 
 @author: wendell
-'''
+"""
 
 from math import sqrt
 from random import randint
 
 
 def isprime(n):
-    prime = True
-
     if n == 2 or (n != 1 and n % 2 == 1):
         prime = True
     else:

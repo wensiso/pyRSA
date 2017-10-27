@@ -1,16 +1,17 @@
-'''
+"""
 Created on 8 de mar de 2017
 
 @author: wendell
-'''
+"""
 
-from pyrsa.rsa import KeyGenerator
-from pyrsa.rsa import RSA
+from pyrsa.rsa import RSAKey, RSA
 
 import pickle
 import time
 
-def encpypt(msg_filename, encrypt_filename, encoder, pool=True):
+
+# noinspection PyShadowingNames,PyShadowingNames,PyShadowingNames
+def encrypt(msg_filename, encrypt_filename, encoder, pool=True):
     print("\nArquivo da mensagem original: ", msg_filename)
     with open(msg_filename, 'r') as msgfile:
         msg = msgfile.read()
@@ -27,6 +28,8 @@ def encpypt(msg_filename, encrypt_filename, encoder, pool=True):
             # print("Arquivo encriptado ", c)
             encfile.close()
 
+
+# noinspection PyShadowingNames,PyShadowingNames
 def decode(encrypt_filename, msgdec_filename, decoder, pool=True):
     print("\nAbrindo arquivo encriptado: ", encrypt_filename)
     with open(encrypt_filename, 'rb') as encfile:
@@ -54,33 +57,30 @@ if __name__ == '__main__':
     msgdec_filename = './data/sample/decod_message.txt'
 
     # Gerando chaves
-    k = KeyGenerator(32, 512)
-    k.generate(True)
+    k = RSAKey(verbose=True)
 
-    print("\nPublic (n, e): ", k.get_public_key())
-    print("Private (n, d): ", k.get_private_key())
+    print("\nPublic (n, e): ", k.get_public())
+    print("Private (n, d): ", k.get_private())
 
     # Salvando chaves em arquivos separados
     with open(pubk_filename, 'w+') as pubk_file:
-        pubk_file.write(str(k.get_public_key()))
+        pubk_file.write(str(k.get_public()))
         pubk_file.close()
 
     with open(privk_filename, 'w+') as privk_file:
-        privk_file.write(str(k.get_private_key()))
+        privk_file.write(str(k.get_private()))
         privk_file.close()
 
     encoder = RSA(k)
 
     begin = time.time()
-    encpypt(msg_filename, encrypt_filename, encoder, False)
+    encrypt(msg_filename, encrypt_filename, encoder, False)
     decode(encrypt_filename, msgdec_filename, encoder, False)
     end = time.time()
-    print('Tempo decorrido (for): ', end - begin, 's')
+    print('Tempo decorrido (list): ', end - begin, 's')
 
     begin = time.time()
-    encpypt(msg_filename, encrypt_filename, encoder, True)
+    encrypt(msg_filename, encrypt_filename, encoder, True)
     decode(encrypt_filename, msgdec_filename, encoder, True)
     end = time.time()
     print('Tempo decorrido (map): ', end - begin, 's')
-
-
