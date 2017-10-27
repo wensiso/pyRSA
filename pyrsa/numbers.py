@@ -15,7 +15,7 @@ def isprime(n):
         prime = False
 
     div = 3
-    while div < sqrt(n) and prime:
+    while div <= sqrt(n) and prime:
         if n % div == 0:
             prime = False
         div += 2
