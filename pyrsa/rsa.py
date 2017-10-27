@@ -4,12 +4,9 @@ Created on 7 de mar de 2017
 @author: wendell
 '''
 
+from multiprocessing import Pool
+from functools import partial
 from .numbers import random_prime
-
-def print_percent(percent):
-    print(percent, "%\b\b\b\b\b\b\b\b", end=' ')
-    sys.stdout.flush()
-
 
 class KeyGenerator():
     '''
@@ -66,34 +63,46 @@ class KeyGenerator():
     def get_private_key(self):
         return (self._n, self._d)
 
+def power(x, y, z):
+    return pow(x, y, z)
 
 class RSA:
 
-    def encode_str(self, m, pubk, verbose=False):
-        n = pubk[0]
-        e = pubk[1]
+    def __init__(self, key):
+        self._key = key
+        self._pubk = key.get_public_key()
+        self._privk = key.get_private_key()
+
+    # pow(ch, k, n) is faster than (ch**k % n)
+    def encode_str(self, m, pool=True):
+        n = self._pubk[0]
+        e = self._pubk[1]
         c = []
 
         msg = [ord(ch) for ch in m]
 
-        i = 0
-        size = len(msg)
-        perc = 0
-        for ch in msg:
-            c.append((ch ** e) % n)
+        if pool:
+            print ("Using 'map'")
+            p = Pool()
+            func = partial(power, y=e, z=n)
+            c = p.map(func, msg)
+        else:
+            c = [pow(ch, e, n) for ch in msg]
 
         return c
 
-    def decode_str(self, c, privk):
-        n = privk[0]
-        d = privk[1]
+    def decode_str(self, c, pool=True):
+        n = self._privk[0]
+        d = self._privk[1]
         m = []
 
-        i = 0
-        size = len(c)
-        perc = 0
-        for ch in c:
-            i = i + 1
-            m.append((ch ** d) % n)
+        if pool:
+            print("Using 'map'")
+            p = Pool()
+            func = partial(power, y=d, z=n)
+            m = p.map(func, c)
+        else:
+            m = [pow(ch, d, n) for ch in c]
 
         return ''.join(chr(i) for i in m)
+
