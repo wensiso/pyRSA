@@ -46,9 +46,7 @@ def decode(encrypt_filename, msgdec_filename, decoder, pool=True):
             decfile.close()
 
 
-if __name__ == '__main__':
-    pass
-
+def main():
     pubk_filename = './data/keys/pubk.txt'
     privk_filename = './data/keys/privk.txt'
 
@@ -84,3 +82,8 @@ if __name__ == '__main__':
     decode(encrypt_filename, msgdec_filename, encoder, True)
     end = time.time()
     print('Tempo decorrido (map): ', end - begin, 's')
+
+
+if __name__ == '__main__':
+    pass
+    main()
