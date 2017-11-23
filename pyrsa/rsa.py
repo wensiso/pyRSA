@@ -14,7 +14,10 @@ class RSAKey:
     max = 512
 
     def __init__(self, p=0, q=0, verbose=False):
+        if p!=0 and q!=0:
+            self._build_keys(p, q, verbose)
 
+    def _build_keys(self, p, q, verbose=False):
         if p > self.min and isprime(p):
             self._p = p
         else:
@@ -51,12 +54,27 @@ class RSAKey:
         print('d not found!')
         return d
 
+    def auto_build(self, verbose=False):
+        self._build_keys(self.min, self.min, verbose)
+
     def get_public(self):
         return self._n, self._e
 
     def get_private(self):
         return self._n, self._d
 
+    def set_public(self, n, e):
+        if e < n and isprime(e):
+            self._n = n
+            self._e = e
+            self._d = 0
+        return False
+
+    def set_private(self, n, d):
+        self._n = n
+        self._e = 0
+        self._d = d
+        return True
 
 def power(x, y, z):
     return pow(x, y, z)
@@ -76,7 +94,6 @@ class RSA:
         msg = [ord(ch) for ch in m]
 
         if pool:
-            print("Using 'map'")
             p = Pool()
             func = partial(power, y=e, z=n)
             c = p.map(func, msg)
@@ -90,7 +107,6 @@ class RSA:
         d = self._privk[1]
 
         if pool:
-            print("Using 'map'")
             p = Pool()
             func = partial(power, y=d, z=n)
             m = p.map(func, c)

@@ -9,6 +9,7 @@ from random import randint
 
 
 def isprime(n):
+    n = int(n)
     if n == 2 or (n != 1 and n % 2 == 1):
         prime = True
     else:
