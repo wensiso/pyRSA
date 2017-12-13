@@ -3,10 +3,6 @@ Created on 8 de mar de 2017
 
 @author: wendell
 """
-from binhex import openrsrc
-
-from UnityTweakTool.elements import option
-
 from pyrsa.rsa import RSAKey, RSA
 from optparse import OptionParser
 
