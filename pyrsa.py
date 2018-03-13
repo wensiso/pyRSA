@@ -38,7 +38,7 @@ parser.add_option("-v", "--verbose", dest="verbose", action='store_true',
 # noinspection PyShadowingNames,PyShadowingNames,PyShadowingNames
 def encrypt(msg_filename, encrypt_filename, encoder, pool=True):
     print("\nArquivo da mensagem original: ", msg_filename)
-    with open(msg_filename, 'r') as msgfile:
+    with open(msg_filename, 'r', encoding="utf8") as msgfile:
         msg = msgfile.read()
         # print("Mensagem original: ", m)
         msgfile.close()
@@ -65,7 +65,7 @@ def decode(encrypt_filename, msgdec_filename, decoder, pool=True):
         encfile.close()
 
         # Salvando arquivo desencriptado
-        with open(msgdec_filename, 'w+') as decfile:
+        with open(msgdec_filename, 'w+', encoding="utf8") as decfile:
             print("Salvando arquivo desencriptado em: ", msgdec_filename)
             decfile.write(msgdec)
             decfile.close()
@@ -83,6 +83,7 @@ def main():
     privk_filename = './data/keys/privk.txt'
 
     if options.list is True:
+        print('MapReduce == false')
         mapreduce = False
 
     if options.dest_filename:
@@ -103,11 +104,11 @@ def main():
         print("Private (n, d): ", k.get_private())
 
         # Salvando chaves em arquivos separados
-        with open(pubk_filename, 'w+') as pubk_file:
+        with open(pubk_filename, 'w+', encoding="utf8") as pubk_file:
             pubk_file.write(str(k.get_public()))
             pubk_file.close()
 
-        with open(privk_filename, 'w+') as privk_file:
+        with open(privk_filename, 'w+', encoding="utf8") as privk_file:
             privk_file.write(str(k.get_private()))
             privk_file.close()
 
