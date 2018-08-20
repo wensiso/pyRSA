@@ -10,29 +10,29 @@ from .numbers import isprime, random_prime
 
 
 class RSAKey:
-    min = 64
-    max = 512
-
+    MIN_PQ = 16384
+    MAX_PQ = 32768
+        
     def __init__(self, p=0, q=0, verbose=False):
         if p!=0 and q!=0:
             self._build_keys(p, q, verbose)
 
     def _build_keys(self, p, q, verbose=False):
-        if p > self.min and isprime(p):
+        if p > RSAKey.MIN_PQ and isprime(p):
             self._p = p
         else:
-            self._p = random_prime(self.min, self.max)
+            self._p = random_prime(RSAKey.MIN_PQ, RSAKey.MAX_PQ)
 
-        if q > self.min and isprime(q):
+        if q > RSAKey.MIN_PQ and isprime(q):
             self._q = q
         else:
-            self._q = random_prime(self.min, self.max)
+            self._q = random_prime(RSAKey.MIN_PQ, RSAKey.MAX_PQ)
 
         self._n = self._p * self._q
         self._z = (self._p - 1) * (self._q - 1)
 
         self._e = random_prime(self._n // 2, self._n - 1)
-        self._d = self._pick_d()
+        self._d = self._pick_d(verbose=True)
 
         if verbose:
             print("p: ", self._p)
@@ -55,7 +55,7 @@ class RSAKey:
         return d
 
     def auto_build(self, verbose=False):
-        self._build_keys(self.min, self.min, verbose)
+        self._build_keys(RSAKey.MIN_PQ, RSAKey.MIN_PQ, verbose)
 
     def get_public(self):
         return self._n, self._e

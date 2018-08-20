@@ -7,25 +7,24 @@ Created on 8 de mar de 2017
 from math import sqrt
 from random import randint
 
-
 def isprime(n):
-    n = int(n)
-    if n == 2 or (n != 1 and n % 2 == 1):
-        prime = True
-    else:
-        prime = False
-
+    if n == 2:
+        return True
+    
+    if (n <= 1) or (n%2==0):
+        return False
+    
     div = 3
-    while div <= sqrt(n) and prime:
+    while(div <= sqrt(n)):
         if n % div == 0:
-            prime = False
+            return False
         div += 2
+        
+    return True
 
-    return prime
 
-
-def random_prime(min, max):
-    n = randint(min, max)
+def random_prime(minimum, maximum):
+    n = randint(minimum, maximum)
     while not isprime(n):
-        n = randint(min, max)
+        n = randint(minimum, maximum)
     return n
