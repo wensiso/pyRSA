@@ -3,6 +3,7 @@ An RSA program written in Python for educational purposes.
 
 ## Usage
 
+```
 pyRSA 0.1 
 ------------------------------
 Usage: 
@@ -22,4 +23,4 @@ Options:
                         (it may be slow)
   -k, --keys            generate a new RSA key pair
   -v, --verbose         print plaintext file contents
-
+```
