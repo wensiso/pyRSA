@@ -1,5 +1,5 @@
 # pyRSA
-An RSA program written in Python for educational purposes.
+A RSA program written in Python for educational purposes.
 
 ## Usage
 
